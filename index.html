@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flor Diaria 🌸</title>
+  
+  <!-- Configuración para App Móvil -->
+  <meta name="theme-color" content="#e91e63">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="https://fav.farm/🌸">
+  <link rel="icon" href="https://fav.farm/🌸">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 30px 25px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 15px 35px rgba(233, 30, 99, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+    .tag {
+      display: inline-block;
+      background: #f8bbd0;
+      color: #c2185b;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+    .flower-box {
+      font-size: 90px;
+      margin: 20px 0;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+    }
+    .flower-box:hover, .flower-box:active {
+      transform: scale(1.15) rotate(5deg);
+    }
+    h1 {
+      color: #880e4f;
+      font-size: 26px;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    p.quote {
+      color: #4a148c;
+      font-size: 16px;
+      line-height: 1.6;
+      font-style: italic;
+      margin-bottom: 20px;
+      min-height: 50px;
+    }
+    .date-badge {
+      font-size: 13px;
+      color: #777;
+      border-top: 1px solid #f2d6e4;
+      padding-top: 15px;
+    }
+    .tap-hint {
+      font-size: 12px;
+      color: #ad1457;
+      margin-top: 5px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="tag">Tu flor de hoy</div>
+    
+    <div class="flower-box" id="flower-icon" onclick="animateFlower()">🌸</div>
+    <div class="tap-hint">✨ Toca la flor ✨</div>
+
+    <h1 id="flower-name">Cargando...</h1>
+    <p class="quote" id="flower-quote">Buscando tu mensaje especial...</p>
+
+    <div class="date-badge" id="date-display"></div>
+  </div>
+
+  <script>
+    // Colección de flores y frases
+    const floriario = [
+      { name: "Girasol Radiante", icon: "🌻", quote: "Que la luz y la buena vibra siempre te sigan donde vayas." },
+      { name: "Rosa Elegante", icon: "🌹", quote: "Un pequeño recordatorio de lo valiosa y especial que eres." },
+      { name: "Flor de Cero / Cerezos", icon: "🌸", quote: "Cada nuevo día es la oportunidad perfecta para florecer." },
+      { name: "Tulipán Primavera", icon: "🌷", quote: "Las cosas más hermosas nacen con paciencia y amor." },
+      { name: "Margarita Silvestre", icon: "🌼", quote: "Sonríe hoy, mereces toda la felicidad del mundo." },
+      { name: "Flor de Loto", icon: "🪷", quote: "Mantén tu paz interior y calma ante cualquier tormenta." },
+      { name: "Hibisco Tropical", icon: "🌺", quote: "Llena tu día de color, alegría y buenas energías." },
+      { name: "Ramillete de Amor", icon: "💐", quote: "Un abrazo sincero convertido en flores para alegrar tu día." }
+    ];
+
+    function cargarFlorDelDia() {
+      const hoy = new Date();
+      
+      // Semilla diaria basada en año, mes y día
+      const inicioAño = new Date(hoy.getFullYear(), 0, 0);
+      const diferencia = hoy - inicioAño;
+      const diaDelAño = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+
+      // Selección de la flor
+      const indice = diaDelAño % floriario.length;
+      const flor = floriario[indice];
+
+      document.getElementById('flower-icon').innerText = flor.icon;
+      document.getElementById('flower-name').innerText = flor.name;
+      document.getElementById('flower-quote').innerText = `"${flor.quote}"`;
+
+      // Fecha legible
+      const opcionesFecha = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const fechaTexto = hoy.toLocaleDateString('es-ES', opcionesFecha);
+      document.getElementById('date-display').innerText = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+    }
+
+    function animateFlower() {
+      const el = document.getElementById('flower-icon');
+      el.style.transform = 'scale(1.3) rotate(15deg)';
+      setTimeout(() => {
+        el.style.transform = 'scale(1) rotate(0deg)';
+      }, 300);
+    }
+
+    // Inicializar
+    cargarFlorDelDia();
+  </script>
+</body>
+</html>
