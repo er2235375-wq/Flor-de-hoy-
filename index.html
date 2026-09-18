@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+<head>  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FlorDiaria</title>
@@ -22,6 +22,14 @@
       --subtext: #aaaaaa;
     }
     * { box-sizing: border-box; }
+      <!-- Botón de música flotante -->
+<button id="music-btn" onclick="toggleMusic()" style="position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50px; padding: 8px 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 13px; z-index: 10;">
+    🎵 <span>Música</span>
+</button>
+
+<audio id="bg-music" loop>
+    <source src="cancion.mp3" type="audio/mpeg">
+</audio>
     body {
       margin: 0;
       padding: 20px;
@@ -170,6 +178,19 @@
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('data:text/javascript,console.log("SW cargado");');
+    }
+  </script>
+  <script>
+    function toggleMusic() {
+        const music = document.getElementById('bg-music');
+        const btn = document.getElementById('music-btn');
+        if (music.paused) {
+            music.play();
+            btn.querySelector('span').innerText = 'Pausar';
+        } else {
+            music.pause();
+            btn.querySelector('span').innerText = 'Música';
+        }
     }
   </script>
 </body>
