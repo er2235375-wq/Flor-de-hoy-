@@ -4,186 +4,239 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlorDiaria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
-        }
-        html, body {
             margin: 0;
             padding: 0;
+        }
+
+        body {
+            background-color: #060913;
+            color: #f3f4f6;
+            font-family: 'Lora', serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        /* Fondo de constelaciones dinámico */
+        .constellation-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background-color: #121212;
-            color: #f0f0f0;
-            font-family: 'Georgia', serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-image: radial-gradient(white 1px, transparent 1px), radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
+            background-size: 50px 50px, 100px 100px;
+            background-position: 0 0, 25px 25px;
+            opacity: 0.3;
+            z-index: 1;
         }
-        .card {
-            background-color: #1e1e1e;
-            padding: 25px 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            margin: 20px;
+
+        /* SVG de Constelación de fondo */
+        .constellation-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            opacity: 0.35;
+            pointer-events: none;
         }
-        .date-badge {
-            color: #d4a373;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+
+        .constellation-svg path, .constellation-svg circle {
+            stroke: #e2e8f0;
+            stroke-width: 1;
+            fill: none;
+            stroke-dasharray: 200;
+            animation: fadeIn 2s ease-in-out forwards;
         }
-        h1 {
-            color: #e06d77;
-            font-size: 1.8rem;
-            margin: 8px 0;
+
+        .constellation-svg circle {
+            fill: #ffffff;
         }
-        .flower {
-            font-size: 3.2rem;
-            margin: 10px 0;
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        .flower-name {
-            font-size: 1rem;
-            color: #e06d77;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        .quote {
-            font-style: italic;
-            color: #ccc;
-            line-height: 1.5;
-            font-size: 0.95rem;
-        }
-        #music-btn {
-            background-color: #e06d77;
+
+        /* Botón de Música */
+        .music-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #f87171;
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 20px;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: background 0.3s;
+        }
+
+        .music-btn:hover {
+            background-color: #ef4444;
+        }
+
+        /* Tarjeta Central */
+        .card {
+            background-color: #12151f;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 30px 25px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            position: relative;
+        }
+
+        .date {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            color: #d4b28c;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            color: #f87171;
+            margin-bottom: 20px;
+        }
+
+        .flower-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .flower-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.15rem;
+            color: #f87171;
+            margin-bottom: 15px;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #e5e7eb;
         }
     </style>
 </head>
 <body>
 
-    <!-- Reproductor de música -->
-    <audio id="bg-music" loop>
-        <source src="cancion.mp3" type="audio/mpeg">
-    </audio>
+    <div class="constellation-bg"></div>
     
-    <button id="music-btn" onclick="toggleMusic()" style="position: fixed; top: 15px; right: 15px; z-index: 9999;">Música</button>
+    <!-- Contenedor para la constelación del día -->
+    <div id="constellation-container"></div>
 
+    <!-- Botón de Música -->
+    <button class="music-btn" id="musicToggle">Música</button>
+
+    <!-- Elemento de Audio (Asegúrate de cambiar 'cancion.mp3' por el nombre de tu archivo de audio) -->
+    <audio id="bgAudio" loop>
+        <source src="cancion.mp3" type="audio/mp3">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <!-- Tarjeta Principal -->
     <div class="card">
-        <div class="date-badge" id="date">Cargando...</div>
-        <h1>FlorDiaria</h1>
-        <div class="flower" id="flower">🌱</div>
-        <div class="flower-name" id="flower-name">Semilla de Vida</div>
-        <div class="quote-container">
-            <p class="quote" id="quote">"Cargando tu frase motivadora del día..."</p>
-        </div>
+        <div class="date" id="currentDate">SÁBADO, 19 DE SEPTIEMBRE DE 2026</div>
+        <h1 class="title">FlorDiaria</h1>
+        <div class="flower-icon" id="flowerIcon">🌿</div>
+        <div class="flower-title" id="flowerTitle">Planta de Hogar de Verano</div>
+        <p class="quote" id="flowerQuote">"Disfruta de la magia de la paz profunda de un corazón que ama sin medida, y que este día te devolverá el doble de lo bueno que das."</p>
     </div>
 
     <script>
-        function toggleMusic() {
-            var music = document.getElementById("bg-music");
-            var btn = document.getElementById("music-btn");
-            if (music.paused) {
-                music.play();
-                btn.innerText = "Pausar";
+        // --- 1. Lógica de Música ---
+        const musicBtn = document.getElementById('musicToggle');
+        const bgAudio = document.getElementById('bgAudio');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgAudio.pause();
+                musicBtn.textContent = 'Música';
+                musicBtn.style.backgroundColor = '#f87171';
             } else {
-                music.pause();
-                btn.innerText = "Música";
+                bgAudio.play().then(() => {
+                    musicBtn.textContent = 'Pausar';
+                    musicBtn.style.backgroundColor = '#10b981';
+                }).catch(e => {
+                    console.log("Error al reproducir audio:", e);
+                });
             }
-        }
-
-        // Catálogo base de íconos y nombres botánicos
-        const baseFlores = [
-            { f: "🌱", n: "Semilla de Vida" }, { f: "🌻", n: "Girasol Radiante" }, { f: "🌷", n: "Tulipán Silvestre" }, 
-            { f: "🌹", n: "Rosa Apasionada" }, { f: "🌺", n: "Hibisco Tropical" }, { f: "🌸", n: "Flor de Cerezo" }, 
-            { f: "🌼", n: "Margarita de la Paz" }, { f: "💐", n: "Ramo de Cariño" }, { f: "💮", n: "Flor Blanca del Alma" }, 
-            { f: "🍀", n: "Trébol de Buena Suerte" }, { f: "🌿", n: "Brote de Esperanza" }, { f: "🌵", n: "Cactus Resiliente" },
-            { f: "🌷", n: "Tulipán Rosa" }, { f: "🌻", n: "Girasol de Verano" }, { f: "🌹", n: "Rosa de Enero" }, 
-            { f: "🌸", n: "Flor de Primavera" }, { f: "🌺", n: "Hibisco Silvestre" }, { f: "🌼", n: "Margarita Dorada" },
-            { f: "🪷", n: "Loto Sagrado" }, { f: "🪻", n: "Jacinto Silencioso" }, { f: "🍁", n: "Hoja de Otoño" },
-            { f: "🌾", n: "Espiga Dorada" }, { f: "🪴", n: "Planta de Hogar" }, { f: "🍂", n: "Hoja Seca Nostálgica" }
-        ];
-
-        // Catálogo base de componentes para estructurar frases infinitamente variadas
-        const inicios = [
-            "Cada amanecer trae consigo", "Recuerda siempre que", "Hoy es el día perfecto para", 
-            "Confía plenamente en que", "Abre tu corazón para", "No olvides nunca que", 
-            "Permítete sentir hoy", "Guarda en tu mente que", "La vida nos regala", 
-            "Camina hoy sabiendo que", "Disfruta de la magia de", "Abraza con fuerza"
-        ];
-        const centros = [
-            " la maravillosa capacidad de transformar tus sueños,", " la valentía inquebrantable para superar cualquier reto,", 
-            " la hermosa tranquilidad de ser tú mism@,", " el arte de cultivar la alegría en los pequeños detalles,", 
-            " la fuerza para florecer incluso en los días grises,", " la magia de una sonrisa sincera en el momento indicado,", 
-            " la calma que llega cuando dejas ir lo innecesario,", " el brillo propio que ilumina cada paso que das,",
-            " la paz profunda de un corazón que ama sin medida,", " la esperanza que brota con la luz de la mañana,"
-        ];
-        const finales = [
-            " y alcanzar todo aquello que te propones con el corazón.", " dejando una huella imborrable a tu alrededor.", 
-            " porque mereces toda la paz y el amor del mundo.", " disfrutando plenamente del presente y construyendo tu destino.", 
-            " con esa elegancia y fortaleza que te caracterizan.", " sabiendo que cada esfuerzo tuyo vale la pena.", 
-            " y que este día te devolverá el doble de lo bueno que das.", " para hacer de hoy un recuerdo inolvidable.",
-            " llenando cada espacio de armonía y bienestar.", " con la certeza de que lo mejor está por venir."
-        ];
-
-        // Función matemática determinista para garantizar exactamente 365 resultados únicos distribuidos por día del año
-        function generar365(diaDelAnio) {
-            // Seleccionar flor única para el día
-            const idxFlor = (diaDelAnio * 37) % baseFlores.length;
-            const florElegida = baseFlores[idxFlor];
-
-            // Modificar ligeramente el nombre según la época del año para darle distinción
-            let nombreFinal = florElegida.n;
-            if (diaDelAnio > 90 && diaDelAnio < 180) nombreFinal += " de Primavera";
-            else if (diaDelAnio >= 180 && diaDelAnio < 270) nombreFinal += " de Verano";
-            else if (diaDelAnio >= 270 && diaDelAnio < 355) nombreFinal += " de Otoño";
-            else nombreFinal += " de Invierno";
-
-            // Combinar componentes para crear una frase única y distinta para este día exacto
-            const i = (diaDelAnio * 13) % inicios.length;
-            const c = (diaDelAnio * 29) % centros.length;
-            const f = (diaDelAnio * 43) % finales.length;
-
-            const fraseElegida = `"${inicios[i]}${centros[c]}${finales[f]}"`;
-
-            return {
-                flor: florElegida.f,
-                nombre: nombreFinal,
-                frase: fraseElegida
-            };
-        }
-
-        window.addEventListener("DOMContentLoaded", () => {
-            const ahora = new Date();
-            const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            let fechaTexto = ahora.toLocaleDateString('es-ES', opcionesFecha);
-            fechaTexto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
-            
-            document.getElementById("date").innerText = fechaTexto;
-
-            // Calcular el número exacto del día del año (1 al 365)
-            const inicioAnio = new Date(ahora.getFullYear(), 0, 0);
-            const diff = (ahora - inicioAnio) + ((inicioAnio.getTimezoneOffset() - ahora.getTimezoneOffset()) * 60 * 1000);
-            const unDiaMilisegundos = 1000 * 60 * 60 * 24;
-            const diaDelAnio = Math.floor(diff / unDiaMilisegundos);
-
-            // Obtener la flor y la frase de los 365 días correspondientes a hoy
-            const datosHoy = generar365(diaDelAnio);
-
-            document.getElementById("flower").innerText = datosHoy.flor;
-            document.getElementById("flower-name").innerText = datosHoy.nombre;
-            document.getElementById("quote").innerText = datosHoy.frase;
+            isPlaying = !isPlaying;
         });
+
+        // --- 2. Constelaciones y Contenido Dinámico por Día de la Semana ---
+        const daysData = [
+            { // Domingo
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M150,200 L300,150 L450,250 L600,180" /><circle cx="150" cy="200" r="3"/><circle cx="300" cy="150" r="4"/><circle cx="450" cy="250" r="3"/><circle cx="600" cy="180" r="4"/></svg>`,
+                flower: "🌸", name: "Flor de Cerezo Silvestre", quote: "Cada amanecer contigo es un lienzo en blanco listo para llenarse de colores hermosos."
+            },
+            { // Lunes
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M200,800 L350,650 L500,750 L650,600" /><circle cx="200" cy="800" r="3"/><circle cx="350" cy="650" r="4"/><circle cx="500" cy="750" r="3"/><circle cx="650" cy="600" r="4"/></svg>`,
+                flower: "🌹", name: "Rosa Mística de Otoño", quote: "Que el inicio de esta semana refleje la fuerza y la elegancia de un amor sincero."
+            },
+            { // Martes
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M800,150 L650,300 L750,450 L600,600" /><circle cx="800" cy="150" r="4"/><circle cx="650" cy="300" r="3"/><circle cx="750" cy="450" r="4"/><circle cx="600" cy="600" r="3"/></svg>`,
+                flower: "🌻", name: "Girasol de los Deseos", quote: "Busca siempre la luz que alegra tus días, tal como las flores buscan el sol."
+            },
+            { // Miércoles
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M100,400 L250,350 L400,450 L550,300" /><circle cx="100" cy="400" r="3"/><circle cx="250" cy="350" r="3"/><circle cx="400" cy="450" r="4"/><circle cx="550" cy="300" r="4"/></svg>`,
+                flower: "🌷", name: "Tulipán de la Aurora", quote: "A mitad de semana, recuerda que cada pequeño detalle cultiva grandes momentos a tu lado."
+            },
+            { // Jueves
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M700,200 L550,350 L400,250 L250,400" /><circle cx="700" cy="200" r="4"/><circle cx="550" cy="350" r="3"/><circle cx="400" cy="250" r="3"/><circle cx="250" cy="400" r="4"/></svg>`,
+                flower: "🌺", name: "Hibisco Tropical", quote: "La belleza de la vida se esconde en las sonrisas compartidas y la paz del alma."
+            },
+            { // Viernes
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M300,100 L450,250 L600,150 L750,300" /><circle cx="300" cy="100" r="4"/><circle cx="450" cy="250" r="3"/><circle cx="600" cy="150" r="4"/><circle cx="750" cy="300" r="3"/></svg>`,
+                flower: "🌼", name: "Margarita de los Sueños", quote: "El fin de semana llega para recordarnos la magia de descansar y disfrutar lo simple."
+            },
+            { // Sábado (Hoy)
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M180,180 L500,320 L820,180 M500,320 L200,820 L800,820" /><circle cx="180" cy="180" r="4"/><circle cx="500" cy="320" r="5"/><circle cx="820" cy="180" r="4"/><circle cx="200" cy="820" r="4"/><circle cx="800" cy="820" r="4"/></svg>`,
+                flower: "🌿", name: "Planta de Hogar de Verano", quote: "Disfruta de la magia de la paz profunda de un corazón que ama sin medida, y que este día te devolverá el doble de lo bueno que das."
+            }
+        ];
+
+        // Obtener el día actual (0 = Domingo, 1 = Lunes, ..., 6 = Sábado)
+        const today = new Date().getDay();
+        const currentDayData = daysData[today];
+
+        // Inyectar la constelación correspondiente
+        document.getElementById('constellation-container').innerHTML = currentDayData.constellationSvg;
+
+        // Inyectar la flor y mensaje del día (opcional, si quieres que cambie automáticamente por día)
+        document.getElementById('flowerIcon').textContent = currentDayData.flower;
+        document.getElementById('flowerTitle').textContent = currentDayData.name;
+        document.getElementById('flowerQuote').textContent = `"${currentDayData.quote}"`;
+
+        // Formatear fecha actual legible
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = new Date().toLocaleDateString('es-ES', options).toUpperCase();
+        document.getElementById('currentDate').textContent = formattedDate;
     </script>
 </body>
 </html>
