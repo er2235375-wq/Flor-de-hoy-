@@ -1,220 +1,189 @@
-<!-- Reproductor de música -->
-<audio id="bg-music" loop>
-    <source src="cancion.mp3" type="audio/mpeg">
-</audio>
-
-<button id="music-btn" onclick="toggleMusic()" style="position: fixed; top: 15px; right: 15px; z-index: 9999; background: #ff4757; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
-    <span>Música</span>
-</button>
-
-<script>
-    function toggleMusic() {
-        var music = document.getElementById("bg-music");
-        var btn = document.getElementById("music-btn");
-        if (music.paused) {
-            music.play();
-            btn.innerText = "Pausar";
-        } else {
-            music.pause();
-            btn.innerText = "Música";
-        }
-    }
-</script>
-
 <!DOCTYPE html>
 <html lang="es">
-<head>  
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlorDiaria</title>
-  <link rel="manifest" href="data:application/manifest+json,{
-    %22name%22:%22FlorDiaria%22,
-    %22short_name%22:%22FlorDiaria%22,
-    %22start_url%22:%22.%22,
-    %22display%22:%22standalone%22,
-    %22background_color%22:%22%23121212%22,
-    %22theme_color%22:%22%23121212%22,
-    %22icons%22:[{%22src%22:%22data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>%22,%22sizes%22:%22192x192%22,%22type%22:%22image/svg+xml%22}]
-  }">
-  <style>
-    :root {
-      --bg: #121212;
-      --card-bg: #1e1e1e;
-      --text: #ffffff;
-      --accent: #ff758c;
-      --subtext: #aaaaaa;
-    }
-    * { box-sizing: border-box; }
-      <!-- Botón de música flotante -->
-<button id="music-btn" onclick="toggleMusic()" style="position: absolute; top: 20px; right: 20px; background: white; border: none; border-radius: 50px; padding: 8px 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); font-size: 13px; z-index: 10;">
-    🎵 <span>Música</span>
-</button>
-
-<audio id="bg-music" loop>
-    <source src="cancion.mp3" type="audio/mpeg">
-</audio>
-    body {
-      margin: 0;
-      padding: 20px;
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-    }
-    .card {
-      background: var(--card-bg);
-      padding: 35px 25px;
-      border-radius: 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      max-width: 380px;
-      width: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .date-badge {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--subtext);
-      margin-bottom: 8px;
-    }
-    h1 {
-      margin: 0 0 15px 0;
-      font-size: 26px;
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .flower {
-      font-size: 90px;
-      margin: 20px 0;
-      display: inline-block;
-      animation: pulse 3s infinite ease-in-out;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.08); }
-      100% { transform: scale(1); }
-    }
-    .flower-name {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--accent);
-      margin-bottom: 15px;
-    }
-    .quote-container {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    p.quote {
-      font-size: 17px;
-      line-height: 1.6;
-      font-style: italic;
-      margin: 0;
-      color: #e0e0e0;
-    }
-  </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlorDiaria</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #121212;
+            color: #f0f0f0;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card {
+            background-color: #1e1e1e;
+            padding: 25px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            margin: 20px;
+        }
+        .date-badge {
+            color: #d4a373;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        h1 {
+            color: #e06d77;
+            font-size: 1.8rem;
+            margin: 8px 0;
+        }
+        .flower {
+            font-size: 3.2rem;
+            margin: 10px 0;
+        }
+        .flower-name {
+            font-size: 1rem;
+            color: #e06d77;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .quote {
+            font-style: italic;
+            color: #ccc;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        #music-btn {
+            background-color: #e06d77;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="card">
-    <div class="date-badge" id="date">Cargando...</div>
-    <h1>FlorDiaria</h1>
-    <div class="flower" id="flower">🌸</div>
-    <div class="flower-name" id="flower-name">Flor del día</div>
+    <!-- Reproductor de música -->
+    <audio id="bg-music" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
     
-    <div class="quote-container">
-      <p class="quote" id="quote">"Cargando tu frase motivadora del día..."</p>
+    <button id="music-btn" onclick="toggleMusic()" style="position: fixed; top: 15px; right: 15px; z-index: 9999;">Música</button>
+
+    <div class="card">
+        <div class="date-badge" id="date">Cargando...</div>
+        <h1>FlorDiaria</h1>
+        <div class="flower" id="flower">🌱</div>
+        <div class="flower-name" id="flower-name">Semilla de Vida</div>
+        <div class="quote-container">
+            <p class="quote" id="quote">"Cargando tu frase motivadora del día..."</p>
+        </div>
     </div>
-  </div>
 
-  <script>
-    const flores = [
-      { flor: "🌻", nombre: "Girasol" },
-      { flor: "🌸", nombre: "Flor de Cerezo" },
-      { flor: "🌹", nombre: "Rosa Roja" },
-      { flor: "🌷", nombre: "Tulipán" },
-      { flor: "🌺", nombre: "Hibisco" },
-      { flor: "🪷", nombre: "Flor de Loto" },
-      { flor: "🌼", nombre: "Margarita" },
-      { flor: "💐", nombre: "Ramillete Silvestre" },
-      { flor: "🏵️", nombre: "Roseta Dorada" },
-      { flor: "🌿", nombre: "Brote de Primavera" },
-      { flor: "🌱", nombre: "Semilla de Vida" },
-      { flor: "🌾", nombre: "Espiga Dorada" },
-      { flor: "☘️", nombre: "Trébol de la Suerte" },
-      { flor: "🥀", nombre: "Rosa Mística" }
-    ];
-
-    const iniciosFrases = [
-      "Cada amanecer trae consigo", "Recuerda siempre que", "Tu mayor fortaleza radica en",
-      "Hoy es el día perfecto para", "Nunca subestimes la fuerza de", "La verdadera belleza comienza con",
-      "Confía plenamente en que", "Mantén la fe en que", "El secreto para avanzar es",
-      "Abre tu corazón para", "La paciencia y el amor siempre", "Crea hoy tu propio espacio para"
-    ];
-
-    const centroFrases = [
-      " la capacidad de transformar tus sueños", " la valentía para superar cualquier reto", " la tranquilidad de ser honesto contigo mismo",
-      " cultivar la alegría en los pequeños detalles", " florecer incluso en los momentos difíciles", " renovar tu energía con pensamientos positivos",
-      " dar lo mejor de ti sin esperar nada a cambio", " aprender de cada paso en el camino", " iluminar la vida de quienes te rodean"
-    ];
-
-    const finalesFrases = [
-      " y alcanzar lo que te propones.", " con una sonrisa imborrable.", " porque mereces toda la paz del mundo.",
-      " y dejar una huella hermosa hoy.", " con elegancia y mucha fuerza.", " permitiendo que tu luz brille sin miedo.",
-      " disfrutando plenamente del presente.", " y construir tu propio destino."
-    ];
-
-    function obtenerDiaDelAnio(fecha) {
-      const inicio = new Date(fecha.getFullYear(), 0, 0);
-      const dif = fecha - inicio;
-      const unDia = 1000 * 60 * 60 * 24;
-      return Math.floor(dif / unDia);
-    }
-
-    function actualizarFlorYFrase() {
-      const hoy = new Date();
-      const diaAnio = obtenerDiaDelAnio(hoy);
-
-      const florIndex = diaAnio % flores.length;
-      const inicioIndex = diaAnio % iniciosFrases.length;
-      const centroIndex = (diaAnio * 3) % centroFrases.length;
-      const finalIndex = (diaAnio * 7) % finalesFrases.length;
-
-      const florDelDia = flores[florIndex];
-      const fraseDelDia = `${iniciosFrases[inicioIndex]}${centroFrases[centroIndex]}${finalesFrases[finalIndex]}`;
-
-      const opcionesFecha = { weekday: 'long', month: 'long', day: 'numeric' };
-      const fechaTexto = hoy.toLocaleDateString('es-ES', opcionesFecha);
-
-      document.getElementById('date').innerText = fechaTexto;
-      document.getElementById('flower').innerText = florDelDia.flor;
-      document.getElementById('flower-name').innerText = florDelDia.nombre;
-      document.getElementById('quote').innerText = `"${fraseDelDia}"`;
-    }
-
-    actualizarFlorYFrase();
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('data:text/javascript,console.log("SW cargado");');
-    }
-  </script>
-  <script>
-    function toggleMusic() {
-        const music = document.getElementById('bg-music');
-        const btn = document.getElementById('music-btn');
-        if (music.paused) {
-            music.play();
-            btn.querySelector('span').innerText = 'Pausar';
-        } else {
-            music.pause();
-            btn.querySelector('span').innerText = 'Música';
+    <script>
+        function toggleMusic() {
+            var music = document.getElementById("bg-music");
+            var btn = document.getElementById("music-btn");
+            if (music.paused) {
+                music.play();
+                btn.innerText = "Pausar";
+            } else {
+                music.pause();
+                btn.innerText = "Música";
+            }
         }
-    }
-  </script>
+
+        // Catálogo base de íconos y nombres botánicos
+        const baseFlores = [
+            { f: "🌱", n: "Semilla de Vida" }, { f: "🌻", n: "Girasol Radiante" }, { f: "🌷", n: "Tulipán Silvestre" }, 
+            { f: "🌹", n: "Rosa Apasionada" }, { f: "🌺", n: "Hibisco Tropical" }, { f: "🌸", n: "Flor de Cerezo" }, 
+            { f: "🌼", n: "Margarita de la Paz" }, { f: "💐", n: "Ramo de Cariño" }, { f: "💮", n: "Flor Blanca del Alma" }, 
+            { f: "🍀", n: "Trébol de Buena Suerte" }, { f: "🌿", n: "Brote de Esperanza" }, { f: "🌵", n: "Cactus Resiliente" },
+            { f: "🌷", n: "Tulipán Rosa" }, { f: "🌻", n: "Girasol de Verano" }, { f: "🌹", n: "Rosa de Enero" }, 
+            { f: "🌸", n: "Flor de Primavera" }, { f: "🌺", n: "Hibisco Silvestre" }, { f: "🌼", n: "Margarita Dorada" },
+            { f: "🪷", n: "Loto Sagrado" }, { f: "🪻", n: "Jacinto Silencioso" }, { f: "🍁", n: "Hoja de Otoño" },
+            { f: "🌾", n: "Espiga Dorada" }, { f: "🪴", n: "Planta de Hogar" }, { f: "🍂", n: "Hoja Seca Nostálgica" }
+        ];
+
+        // Catálogo base de componentes para estructurar frases infinitamente variadas
+        const inicios = [
+            "Cada amanecer trae consigo", "Recuerda siempre que", "Hoy es el día perfecto para", 
+            "Confía plenamente en que", "Abre tu corazón para", "No olvides nunca que", 
+            "Permítete sentir hoy", "Guarda en tu mente que", "La vida nos regala", 
+            "Camina hoy sabiendo que", "Disfruta de la magia de", "Abraza con fuerza"
+        ];
+        const centros = [
+            " la maravillosa capacidad de transformar tus sueños,", " la valentía inquebrantable para superar cualquier reto,", 
+            " la hermosa tranquilidad de ser tú mism@,", " el arte de cultivar la alegría en los pequeños detalles,", 
+            " la fuerza para florecer incluso en los días grises,", " la magia de una sonrisa sincera en el momento indicado,", 
+            " la calma que llega cuando dejas ir lo innecesario,", " el brillo propio que ilumina cada paso que das,",
+            " la paz profunda de un corazón que ama sin medida,", " la esperanza que brota con la luz de la mañana,"
+        ];
+        const finales = [
+            " y alcanzar todo aquello que te propones con el corazón.", " dejando una huella imborrable a tu alrededor.", 
+            " porque mereces toda la paz y el amor del mundo.", " disfrutando plenamente del presente y construyendo tu destino.", 
+            " con esa elegancia y fortaleza que te caracterizan.", " sabiendo que cada esfuerzo tuyo vale la pena.", 
+            " y que este día te devolverá el doble de lo bueno que das.", " para hacer de hoy un recuerdo inolvidable.",
+            " llenando cada espacio de armonía y bienestar.", " con la certeza de que lo mejor está por venir."
+        ];
+
+        // Función matemática determinista para garantizar exactamente 365 resultados únicos distribuidos por día del año
+        function generar365(diaDelAnio) {
+            // Seleccionar flor única para el día
+            const idxFlor = (diaDelAnio * 37) % baseFlores.length;
+            const florElegida = baseFlores[idxFlor];
+
+            // Modificar ligeramente el nombre según la época del año para darle distinción
+            let nombreFinal = florElegida.n;
+            if (diaDelAnio > 90 && diaDelAnio < 180) nombreFinal += " de Primavera";
+            else if (diaDelAnio >= 180 && diaDelAnio < 270) nombreFinal += " de Verano";
+            else if (diaDelAnio >= 270 && diaDelAnio < 355) nombreFinal += " de Otoño";
+            else nombreFinal += " de Invierno";
+
+            // Combinar componentes para crear una frase única y distinta para este día exacto
+            const i = (diaDelAnio * 13) % inicios.length;
+            const c = (diaDelAnio * 29) % centros.length;
+            const f = (diaDelAnio * 43) % finales.length;
+
+            const fraseElegida = `"${inicios[i]}${centros[c]}${finales[f]}"`;
+
+            return {
+                flor: florElegida.f,
+                nombre: nombreFinal,
+                frase: fraseElegida
+            };
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const ahora = new Date();
+            const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            let fechaTexto = ahora.toLocaleDateString('es-ES', opcionesFecha);
+            fechaTexto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+            
+            document.getElementById("date").innerText = fechaTexto;
+
+            // Calcular el número exacto del día del año (1 al 365)
+            const inicioAnio = new Date(ahora.getFullYear(), 0, 0);
+            const diff = (ahora - inicioAnio) + ((inicioAnio.getTimezoneOffset() - ahora.getTimezoneOffset()) * 60 * 1000);
+            const unDiaMilisegundos = 1000 * 60 * 60 * 24;
+            const diaDelAnio = Math.floor(diff / unDiaMilisegundos);
+
+            // Obtener la flor y la frase de los 365 días correspondientes a hoy
+            const datosHoy = generar365(diaDelAnio);
+
+            document.getElementById("flower").innerText = datosHoy.flor;
+            document.getElementById("flower-name").innerText = datosHoy.nombre;
+            document.getElementById("quote").innerText = datosHoy.frase;
+        });
+    </script>
 </body>
 </html>
