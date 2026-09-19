@@ -26,21 +26,20 @@
             padding: 20px;
         }
 
-        /* Fondo de constelaciones dinámico */
+        /* Fondo de estrellas sutil */
         .constellation-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(white 1px, transparent 1px), radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
-            background-size: 50px 50px, 100px 100px;
-            background-position: 0 0, 25px 25px;
-            opacity: 0.3;
+            background-image: radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.2;
             z-index: 1;
         }
 
-        /* SVG de Constelación de fondo */
+        /* SVG de Constelación de fondo - Visible y brillante */
         .constellation-svg {
             position: absolute;
             top: 0;
@@ -48,25 +47,21 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            opacity: 0.35;
             pointer-events: none;
         }
 
-        .constellation-svg path, .constellation-svg circle {
-            stroke: #e2e8f0;
-            stroke-width: 1;
+        .constellation-svg path {
+            stroke: rgba(255, 255, 255, 0.65);
+            stroke-width: 2;
             fill: none;
-            stroke-dasharray: 200;
-            animation: fadeIn 2s ease-in-out forwards;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
         }
 
         .constellation-svg circle {
             fill: #ffffff;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            stroke: rgba(255, 255, 255, 0.8);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
         }
 
         /* Botón de Música */
@@ -152,7 +147,7 @@
     <!-- Botón de Música -->
     <button class="music-btn" id="musicToggle">Música</button>
 
-    <!-- Elemento de Audio (Asegúrate de cambiar 'cancion.mp3' por el nombre de tu archivo de audio) -->
+    <!-- Elemento de Audio -->
     <audio id="bgAudio" loop>
         <source src="cancion.mp3" type="audio/mp3">
         Tu navegador no soporta audio.
@@ -192,31 +187,31 @@
         // --- 2. Constelaciones y Contenido Dinámico por Día de la Semana ---
         const daysData = [
             { // Domingo
-                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M150,200 L300,150 L450,250 L600,180" /><circle cx="150" cy="200" r="3"/><circle cx="300" cy="150" r="4"/><circle cx="450" cy="250" r="3"/><circle cx="600" cy="180" r="4"/></svg>`,
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M150,200 L300,150 L450,250 L600,180" /><circle cx="150" cy="200" r="4"/><circle cx="300" cy="150" r="5"/><circle cx="450" cy="250" r="4"/><circle cx="600" cy="180" r="5"/></svg>`,
                 flower: "🌸", name: "Flor de Cerezo Silvestre", quote: "Cada amanecer contigo es un lienzo en blanco listo para llenarse de colores hermosos."
             },
             { // Lunes
-                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M200,800 L350,650 L500,750 L650,600" /><circle cx="200" cy="800" r="3"/><circle cx="350" cy="650" r="4"/><circle cx="500" cy="750" r="3"/><circle cx="650" cy="600" r="4"/></svg>`,
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M200,800 L350,650 L500,750 L650,600" /><circle cx="200" cy="800" r="4"/><circle cx="350" cy="650" r="5"/><circle cx="500" cy="750" r="4"/><circle cx="650" cy="600" r="5"/></svg>`,
                 flower: "🌹", name: "Rosa Mística de Otoño", quote: "Que el inicio de esta semana refleje la fuerza y la elegancia de un amor sincero."
             },
             { // Martes
-                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M800,150 L650,300 L750,450 L600,600" /><circle cx="800" cy="150" r="4"/><circle cx="650" cy="300" r="3"/><circle cx="750" cy="450" r="4"/><circle cx="600" cy="600" r="3"/></svg>`,
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M800,150 L650,300 L750,450 L600,600" /><circle cx="800" cy="150" r="5"/><circle cx="650" cy="300" r="4"/><circle cx="750" cy="450" r="5"/><circle cx="600" cy="600" r="4"/></svg>`,
                 flower: "🌻", name: "Girasol de los Deseos", quote: "Busca siempre la luz que alegra tus días, tal como las flores buscan el sol."
             },
             { // Miércoles
-                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M100,400 L250,350 L400,450 L550,300" /><circle cx="100" cy="400" r="3"/><circle cx="250" cy="350" r="3"/><circle cx="400" cy="450" r="4"/><circle cx="550" cy="300" r="4"/></svg>`,
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M100,400 L250,350 L400,450 L550,300" /><circle cx="100" cy="400" r="4"/><circle cx="250" cy="350" r="4"/><circle cx="400" cy="450" r="5"/><circle cx="550" cy="300" r="5"/></svg>`,
                 flower: "🌷", name: "Tulipán de la Aurora", quote: "A mitad de semana, recuerda que cada pequeño detalle cultiva grandes momentos a tu lado."
             },
             { // Jueves
-                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M700,200 L550,350 L400,250 L250,400" /><circle cx="700" cy="200" r="4"/><circle cx="550" cy="350" r="3"/><circle cx="400" cy="250" r="3"/><circle cx="250" cy="400" r="4"/></svg>`,
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M700,200 L550,350 L400,250 L250,400" /><circle cx="700" cy="200" r="5"/><circle cx="550" cy="350" r="4"/><circle cx="400" cy="250" r="4"/><circle cx="250" cy="400" r="5"/></svg>`,
                 flower: "🌺", name: "Hibisco Tropical", quote: "La belleza de la vida se esconde en las sonrisas compartidas y la paz del alma."
             },
             { // Viernes
-                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M300,100 L450,250 L600,150 L750,300" /><circle cx="300" cy="100" r="4"/><circle cx="450" cy="250" r="3"/><circle cx="600" cy="150" r="4"/><circle cx="750" cy="300" r="3"/></svg>`,
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M300,100 L450,250 L600,150 L750,300" /><circle cx="300" cy="100" r="5"/><circle cx="450" cy="250" r="4"/><circle cx="600" cy="150" r="5"/><circle cx="750" cy="300" r="4"/></svg>`,
                 flower: "🌼", name: "Margarita de los Sueños", quote: "El fin de semana llega para recordarnos la magia de descansar y disfrutar lo simple."
             },
             { // Sábado (Hoy)
-                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M180,180 L500,320 L820,180 M500,320 L200,820 L800,820" /><circle cx="180" cy="180" r="4"/><circle cx="500" cy="320" r="5"/><circle cx="820" cy="180" r="4"/><circle cx="200" cy="820" r="4"/><circle cx="800" cy="820" r="4"/></svg>`,
+                constellationSvg: `<svg class="constellation-svg" viewBox="0 0 1000 1000"><path d="M180,180 L500,320 L820,180 M500,320 L200,820 L800,820" /><circle cx="180" cy="180" r="5"/><circle cx="500" cy="320" r="6"/><circle cx="820" cy="180" r="5"/><circle cx="200" cy="820" r="5"/><circle cx="800" cy="820" r="5"/></svg>`,
                 flower: "🌿", name: "Planta de Hogar de Verano", quote: "Disfruta de la magia de la paz profunda de un corazón que ama sin medida, y que este día te devolverá el doble de lo bueno que das."
             }
         ];
@@ -228,7 +223,7 @@
         // Inyectar la constelación correspondiente
         document.getElementById('constellation-container').innerHTML = currentDayData.constellationSvg;
 
-        // Inyectar la flor y mensaje del día (opcional, si quieres que cambie automáticamente por día)
+        // Inyectar la flor y mensaje del día
         document.getElementById('flowerIcon').textContent = currentDayData.flower;
         document.getElementById('flowerTitle').textContent = currentDayData.name;
         document.getElementById('flowerQuote').textContent = `"${currentDayData.quote}"`;
